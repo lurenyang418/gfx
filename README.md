@@ -3,7 +3,7 @@
 > 就懒那么一点点
 
 ```shell
-go install github.com/lurenyang418/gfx/cmd/gfx
+go install github.com/lurenyang418/gfx/cmd/gfx/
 
 gfx gen logic -s user
 
