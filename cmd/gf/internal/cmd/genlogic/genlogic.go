@@ -1,6 +1,7 @@
 package genlogic
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gogf/gf/v2/errors/gerror"
@@ -56,7 +57,7 @@ func (c *CGenLogic) Logic(ctx g.Ctx, in CGenLogicInput) (out *CGenLogicOutput, e
 	dstLogicFolderPath := gfile.Join(in.DstFolder, in.ServiceName)
 
 	serviceFilePath := gfile.Join(dstLogicFolderPath, in.ServiceName+".go")
-	servicePlaceholderPath := gfile.Join(dstLogicFolderPath, in.ServiceName+"_get.go")
+	crud := []string{"add", "get", "list", "update", "delete"}
 
 	if !gfile.Exists(serviceFilePath) {
 		content := gstr.ReplaceByMap(consts.TemplateGenLogicNew, g.MapStrStr{
@@ -69,13 +70,14 @@ func (c *CGenLogic) Logic(ctx g.Ctx, in CGenLogicInput) (out *CGenLogicOutput, e
 			return nil, err
 		}
 	}
-
-	if !gfile.Exists(servicePlaceholderPath) {
+	for _, v := range crud {
+		servicePath := gfile.Join(dstLogicFolderPath, in.ServiceName+fmt.Sprintf("_%s.go", v))
 		content := gstr.ReplaceByMap(consts.TemplateGenLogicNewPlaceholder, g.MapStrStr{
 			"{PackageName}": in.ServiceName,
 			"{Service}":     gstr.CaseCamel(in.ServiceName),
+			"{Method}":      gstr.CaseCamel(v),
 		})
-		if err = gfile.PutContents(servicePlaceholderPath, gstr.TrimLeft(content)); err != nil {
+		if err = gfile.PutContents(servicePath, gstr.TrimLeft(content)); err != nil {
 			return nil, err
 		}
 	}

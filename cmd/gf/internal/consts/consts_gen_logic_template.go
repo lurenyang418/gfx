@@ -30,7 +30,7 @@ import (
 )
 
 // this is a handy copy
-func (s *s{Service}) GetBy{Service}Id(ctx context.Context, {Service}Id int) (any, error){
+func (s *s{Service}) {Service}{Method}(ctx context.Context, req *model.{Service}{Method}Req ) (any, error){
 	return nil, gerror.NewCode(gcode.CodeNotImplemented)
 }
 `
